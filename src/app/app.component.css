@@ -1,0 +1,83 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.game-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #fff7b2 0%, #ffb6c1 35%, #8ec5fc 100%);
+  padding: 24px;
+}
+
+.game-card {
+  width: min(90vw, 700px);
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 4px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 24px 50px rgba(84, 34, 110, 0.2);
+  text-align: center;
+  padding: 36px 24px;
+  backdrop-filter: blur(8px);
+}
+
+.label {
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6a3fa0;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+.letter-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.big-letter {
+  font-size: clamp(6rem, 18vw, 13rem);
+  line-height: 1;
+  font-weight: 900;
+  color: #3d2f91;
+  background: linear-gradient(135deg, #ff8a00, #ff3d81 50%, #7c4dff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.emoji {
+  font-size: clamp(4rem, 10vw, 7rem);
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18));
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: #2c1d5a;
+}
+
+.hint {
+  margin-top: 16px;
+  font-size: 1.1rem;
+  color: #54457d;
+}
+
+@media (max-width: 600px) {
+  .game-card {
+    padding: 28px 18px;
+  }
+
+  .letter-box {
+    flex-direction: column;
+    gap: 0;
+  }
+}

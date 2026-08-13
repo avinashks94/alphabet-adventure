@@ -16,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
@@ -28,15 +28,17 @@ jobs:
         run: npm ci
 
       - name: Build Angular application
-        run: npm run build -- --base-href /alphabet-identify/
+        # 1. CHANGE 'alphabet-identify' TO YOUR NEW REPO NAME HERE:
+        run: npm run build -- --base-href /YOUR-NEW-REPO-NAME/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist/alphabet-identify/browser
+          # 2. CHANGE 'alphabet-identify' TO YOUR NEW REPO NAME HERE:
+          path: ./dist/YOUR-NEW-REPO-NAME/browser
 
   deploy:
     needs: build

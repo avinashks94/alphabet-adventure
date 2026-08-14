@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "alphabet-identify": {
+    "alphabet-adventure": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:class": {
@@ -40,7 +40,7 @@
           "options": {
             "baseHref": "/",
             "deployUrl": "/",
-            "outputPath": "dist/alphabet-identify",
+            "outputPath": "dist/alphabet-adventure",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -77,10 +77,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "alphabet-identify:build:production"
+              "buildTarget": "alphabet-adventure:build:production"
             },
             "development": {
-              "buildTarget": "alphabet-identify:build:development"
+              "buildTarget": "alphabet-adventure:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +88,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "alphabet-identify:build"
+            "buildTarget": "alphabet-adventure:build"
           }
         },
         "test": {

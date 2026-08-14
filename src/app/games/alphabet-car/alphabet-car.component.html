@@ -1,0 +1,53 @@
+<main class="car-game">
+  <nav class="car-nav">
+    <button class="home-button car-home" (click)="goBack()">
+      ← <span>All games</span>
+    </button>
+    <div class="car-title">
+      <span>🚘</span>
+      <div><b>Alphabet Car</b><small>Drive, discover & learn!</small></div>
+    </div>
+    <div class="key-hint">
+      <kbd>A</kbd>–<kbd>Z</kbd><span> Press a key</span>
+    </div>
+  </nav>
+  <section class="car-status" aria-live="polite">
+    <span>{{ isDriving ? "💨" : "📍" }}</span
+    ><strong>{{ carMessage }}</strong>
+  </section>
+  <section class="road-viewport" #roadViewport>
+    <div class="world">
+      <div class="sun">☀</div>
+      <div class="hills hill-one"></div>
+      <div class="hills hill-two"></div>
+      <div class="road">
+        <div class="road-dashes"></div>
+        @for (item of alphabet; track item.letter; let i = $index) {
+          <button
+            class="stop"
+            [class.active]="i === carIndex"
+            [style.left.%]="(i / (alphabet.length - 1)) * 100"
+            (click)="driveTo(i)"
+            [attr.aria-label]="'Drive to ' + item.letter"
+          >
+            <span class="sign">{{ item.letter }}</span
+            ><span class="sign-post"></span>
+          </button>
+        }
+        <div
+          class="car-wrap"
+          [class.driving]="isDriving"
+          [style.left.%]="carPosition"
+        >
+          <div class="car" [class.facing-back]="carDirection === 'backward'">
+            <div class="car-top"><span></span><span></span></div>
+            <div class="car-body"><i class="light"></i></div>
+            <i class="wheel wheel-one"></i><i class="wheel wheel-two"></i>
+          </div>
+        </div>
+      </div>
+      <div class="grass-bottom"></div>
+    </div>
+  </section>
+  <p class="mobile-tip">Tap a letter sign or press a key to drive</p>
+</main>

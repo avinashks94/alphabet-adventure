@@ -1,11 +1,5 @@
-<main class="game-shell">
-  <div class="game-card" aria-live="polite">
-    <p class="label">Press any letter key</p>
-    <div class="letter-box">
-      <span class="big-letter">{{ selectedLetter.letter }}</span>
-      <span class="emoji">{{ selectedLetter.emoji }}</span>
-    </div>
-    <h1>{{ spokenText }}</h1>
-    <p class="hint">Try A, B, C, D and listen to the sound.</p>
-  </div>
-</main>
+@switch (screen) {
+  @case ('alphabet-sounds') { <app-alphabet-sounds (back)="showDashboard()" /> }
+  @case ('alphabet-car') { <app-alphabet-car (back)="showDashboard()" /> }
+  @default { <app-dashboard (gameSelected)="openGame($event)" /> }
+}

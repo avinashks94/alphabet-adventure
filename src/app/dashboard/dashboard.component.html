@@ -1,0 +1,39 @@
+<main class="dashboard">
+  <div class="cloud cloud-one"></div>
+  <div class="cloud cloud-two"></div>
+  <header class="dashboard-header">
+    <span class="eyebrow">LEARN • PLAY • GROW</span>
+    <h1>Alphabet Adventure</h1>
+    <p>Pick a game and start learning your ABCs!</p>
+  </header>
+  <section class="game-grid" aria-label="Choose a game">
+    <button
+      class="game-tile letter-tile"
+      (click)="gameSelected.emit('alphabet-sounds')"
+    >
+      <span class="tile-art"><b>A</b><b>B</b><b>C</b></span
+      ><span class="tile-copy"
+        ><strong>Alphabet Sounds</strong
+        ><small>Press a letter, hear its sound</small></span
+      ><span class="play-pill">Play now <span>→</span></span>
+    </button>
+    <button
+      class="game-tile car-tile"
+      (click)="gameSelected.emit('alphabet-car')"
+    >
+      <span class="tile-art mini-road"><span class="mini-car">🚗</span></span
+      ><span class="tile-copy"
+        ><strong>Alphabet Car</strong
+        ><small>Drive your car through the ABCs</small></span
+      ><span class="play-pill">Start engine <span>→</span></span>
+    </button>
+    <div class="game-tile coming-tile" aria-disabled="true">
+      <span class="soon-badge">COMING SOON</span
+      ><span class="tile-art mystery-art">?</span
+      ><span class="tile-copy"
+        ><strong>Alphabet Mystery</strong
+        ><small>A new adventure is on the way!</small></span
+      ><span class="locked-pill">🔒 Locked</span>
+    </div>
+  </section>
+</main>

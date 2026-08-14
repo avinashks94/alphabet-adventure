@@ -28,10 +28,7 @@ jobs:
         run: npm ci
 
       - name: Build Angular application
-        run: npm run build -- --base-href /alphabet-adventure/ --deploy-url /alphabet-adventure/
-
-      - name: Add SPA fallback
-        run: cp ./dist/alphabet-adventure/browser/index.html ./dist/alphabet-adventure/browser/404.html
+        run: npm run build -- --base-href /alphabet-adventure/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

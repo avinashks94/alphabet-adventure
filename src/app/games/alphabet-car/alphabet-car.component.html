@@ -12,8 +12,16 @@
     </div>
   </nav>
   <section class="car-status" aria-live="polite">
-    <span>{{ isDriving ? "💨" : "📍" }}</span
-    ><strong>{{ carMessage }}</strong>
+    <div class="selected-letter-card">
+      <span class="status-tree">🌳</span>
+      @if (selectedLetter) {
+        <div class="selected-letter-copy">
+          <small>{{ carMessage }}</small><b class="selected-letter-badge">{{ selectedLetter }}</b>
+        </div>
+      } @else {
+        <strong>Press a letter and let's drive!</strong>
+      }
+    </div>
   </section>
   <section class="loop-world">
     <div class="sun">☀</div>
@@ -53,9 +61,6 @@
         <div class="car-body"><i class="light"></i></div>
         <i class="wheel wheel-one"></i><i class="wheel wheel-two"></i>
       </div>
-    </div>
-    <div class="park-center">
-      <span>🌳</span><strong>ABC Park</strong><small>Choose any letter!</small>
     </div>
   </section>
   <p class="mobile-tip">Tap a letter or press a key to drive</p>

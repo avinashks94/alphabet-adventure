@@ -1,5 +1,1 @@
-@switch (screen) {
-  @case ('alphabet-sounds') { <app-alphabet-sounds (back)="showDashboard()" /> }
-  @case ('alphabet-car') { <app-alphabet-car (back)="showDashboard()" /> }
-  @default { <app-dashboard (gameSelected)="openGame($event)" /> }
-}
+<router-outlet />

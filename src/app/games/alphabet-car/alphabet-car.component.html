@@ -1,4 +1,4 @@
-<main class="car-game">
+<main class="car-game loop-game">
   <nav class="car-nav">
     <button class="home-button car-home" (click)="goBack()">
       ← <span>All games</span>
@@ -15,39 +15,48 @@
     <span>{{ isDriving ? "💨" : "📍" }}</span
     ><strong>{{ carMessage }}</strong>
   </section>
-  <section class="road-viewport" #roadViewport>
-    <div class="world">
-      <div class="sun">☀</div>
-      <div class="hills hill-one"></div>
-      <div class="hills hill-two"></div>
-      <div class="road">
-        <div class="road-dashes"></div>
-        @for (item of alphabet; track item.letter; let i = $index) {
-          <button
-            class="stop"
-            [class.active]="i === carIndex"
-            [style.left.%]="(i / (alphabet.length - 1)) * 100"
-            (click)="driveTo(i)"
-            [attr.aria-label]="'Drive to ' + item.letter"
-          >
-            <span class="sign">{{ item.letter }}</span
-            ><span class="sign-post"></span>
-          </button>
-        }
-        <div
-          class="car-wrap"
-          [class.driving]="isDriving"
-          [style.left.%]="carPosition"
-        >
-          <div class="car" [class.facing-back]="carDirection === 'backward'">
-            <div class="car-top"><span></span><span></span></div>
-            <div class="car-body"><i class="light"></i></div>
-            <i class="wheel wheel-one"></i><i class="wheel wheel-two"></i>
-          </div>
-        </div>
+  <section class="loop-world">
+    <div class="sun">☀</div>
+    <div class="loop-hill hill-left"></div>
+    <div class="loop-hill hill-right"></div>
+    <svg
+      class="multi-road"
+      viewBox="0 0 1000 600"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path class="road-edge" d="M80 108 H920 V300 H80 V492 H920" />
+      <path class="road-surface" d="M80 108 H920 V300 H80 V492 H920" />
+      <path class="road-center-line" d="M80 108 H920 V300 H80 V492 H920" />
+    </svg>
+    @for (item of alphabet; track item.letter; let i = $index) {
+      <button
+        class="loop-stop"
+        [class.active]="i === carIndex"
+        [style.left.%]="stopPositions[i].x"
+        [style.top.%]="stopPositions[i].y - 10"
+        (click)="driveTo(i)"
+        [attr.aria-label]="'Drive to ' + item.letter"
+      >
+        <span>{{ item.letter }}</span
+        ><i aria-hidden="true"></i>
+      </button>
+    }
+    <div
+      class="loop-car-wrap"
+      [class.driving]="isDriving"
+      [style.left.%]="carLeft"
+      [style.top.%]="carTop"
+    >
+      <div class="car" [class.facing-back]="carDirection === 'backward'">
+        <div class="car-top"><span></span><span></span></div>
+        <div class="car-body"><i class="light"></i></div>
+        <i class="wheel wheel-one"></i><i class="wheel wheel-two"></i>
       </div>
-      <div class="grass-bottom"></div>
+    </div>
+    <div class="park-center">
+      <span>🌳</span><strong>ABC Park</strong><small>Choose any letter!</small>
     </div>
   </section>
-  <p class="mobile-tip">Tap a letter sign or press a key to drive</p>
+  <p class="mobile-tip">Tap a letter or press a key to drive</p>
 </main>

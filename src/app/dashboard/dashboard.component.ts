@@ -1,8 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
-export type GameSelection = 'alphabet-sounds' | 'alphabet-car';
-
-@Component({ selector: 'app-dashboard', standalone: true, templateUrl: './dashboard.component.html' })
-export class DashboardComponent {
-  @Output() gameSelected = new EventEmitter<GameSelection>();
-}
+@Component({ selector: 'app-dashboard', standalone: true, imports: [RouterLink], templateUrl: './dashboard.component.html' })
+export class DashboardComponent {}

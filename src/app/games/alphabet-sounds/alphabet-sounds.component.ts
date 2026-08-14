@@ -1,9 +1,10 @@
-import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { ALPHABET, AlphabetItem } from '../../shared/alphabet.data';
 
 @Component({ selector: 'app-alphabet-sounds', standalone: true, templateUrl: './alphabet-sounds.component.html' })
 export class AlphabetSoundsComponent {
-  @Output() back = new EventEmitter<void>();
+  private readonly router = inject(Router);
   readonly alphabet = ALPHABET;
   readonly itemByLetter = new Map(ALPHABET.map(item => [item.letter, item]));
   selectedLetter = ALPHABET[0];
@@ -24,5 +25,5 @@ export class AlphabetSoundsComponent {
     voice.lang = 'en-US'; voice.rate = .9; voice.pitch = 1.1;
     window.speechSynthesis?.speak(voice);
   }
-  goBack(): void { window.speechSynthesis?.cancel(); this.back.emit(); }
+  goBack(): void { window.speechSynthesis?.cancel(); void this.router.navigate(['/']); }
 }

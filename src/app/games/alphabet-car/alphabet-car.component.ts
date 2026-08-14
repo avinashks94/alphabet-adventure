@@ -1,12 +1,25 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, OnDestroy, Output, ViewChild } from '@angular/core';
+import { Component, HostListener, inject, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { ALPHABET } from '../../shared/alphabet.data';
 
-@Component({ selector: 'app-alphabet-car', standalone: true, templateUrl: './alphabet-car.component.html' })
-export class AlphabetCarComponent implements AfterViewInit, OnDestroy {
-  @Output() back = new EventEmitter<void>();
-  @ViewChild('roadViewport') roadViewport?: ElementRef<HTMLElement>;
+type StopPosition = { x: number; y: number };
+
+@Component({
+  selector: 'app-alphabet-car',
+  standalone: true,
+  templateUrl: './alphabet-car.component.html',
+  styleUrl: './alphabet-car.component.css',
+  styles: ['.loop-car-wrap { transition: left .2s linear, top .2s linear !important; }']
+})
+export class AlphabetCarComponent implements OnDestroy {
+  private readonly router = inject(Router);
   readonly alphabet = ALPHABET;
   readonly itemByLetter = new Map(ALPHABET.map((item, index) => [item.letter, index]));
+  readonly stopPositions: StopPosition[] = [
+    {x:8,y:18},{x:18.5,y:18},{x:29,y:18},{x:39.5,y:18},{x:50,y:18},{x:60.5,y:18},{x:71,y:18},{x:81.5,y:18},{x:92,y:18},
+    {x:92,y:50},{x:81.5,y:50},{x:71,y:50},{x:60.5,y:50},{x:50,y:50},{x:39.5,y:50},{x:29,y:50},{x:18.5,y:50},{x:8,y:50},
+    {x:8,y:82},{x:20,y:82},{x:32,y:82},{x:44,y:82},{x:56,y:82},{x:68,y:82},{x:80,y:82},{x:92,y:82}
+  ];
   carIndex = 0;
   carDirection: 'forward' | 'backward' = 'forward';
   isDriving = false;
@@ -14,7 +27,9 @@ export class AlphabetCarComponent implements AfterViewInit, OnDestroy {
   private arrivalTimer?: ReturnType<typeof setTimeout>;
 
   get carPosition(): number { return this.carIndex / (this.alphabet.length - 1) * 100; }
-  ngAfterViewInit(): void { setTimeout(() => this.scrollCarIntoView(false)); }
+  get carLeft(): number { return this.stopPositions[this.carIndex].x; }
+  get carTop(): number { return this.stopPositions[this.carIndex].y; }
+
   ngOnDestroy(): void {
     if (this.arrivalTimer) clearTimeout(this.arrivalTimer);
     window.speechSynthesis?.cancel();
@@ -28,42 +43,43 @@ export class AlphabetCarComponent implements AfterViewInit, OnDestroy {
   }
   driveTo(index: number): void {
     if (this.arrivalTimer) clearTimeout(this.arrivalTimer);
-    const distance = Math.abs(index - this.carIndex);
-    this.carDirection = index < this.carIndex ? 'backward' : 'forward';
-    this.carIndex = index;
-    this.isDriving = distance > 0;
-    const item = this.alphabet[index];
-    this.carMessage = distance ? `Driving to ${item.letter}...` : `We are already at ${item.letter}!`;
-    setTimeout(() => this.scrollCarIntoView(true));
-    this.arrivalTimer = setTimeout(() => {
+    const letter = this.alphabet[index].letter;
+    if (index === this.carIndex) {
       this.isDriving = false;
-      this.carMessage = `Honk honk! ${item.letter} for ${item.word}`;
-      this.playHorn(); this.speak(`${item.letter} for ${item.word}`);
-    }, distance ? 900 : 100);
+      this.carMessage = `We are already at ${letter}!`;
+      this.arrivalTimer = setTimeout(() => this.announceArrival(letter), 100);
+      return;
+    }
+    this.isDriving = true;
+    this.carMessage = `Driving to ${letter}...`;
+    this.moveAlongRoad(index, letter);
   }
-  goBack(): void { this.back.emit(); }
-  private scrollCarIntoView(smooth: boolean): void {
-    const viewport = this.roadViewport?.nativeElement;
-    if (!viewport) return;
-    const carX = 60 + this.carPosition / 100 * Math.max(viewport.scrollWidth - 120, 0);
-    viewport.scrollTo({ left: carX - viewport.clientWidth / 2, behavior: smooth ? 'smooth' : 'auto' });
-  }
-  private playHorn(): void {
-    const AudioCtor = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!AudioCtor) return;
-    const context = new AudioCtor(), now = context.currentTime;
-    [0, .22].forEach(delay => {
-      const oscillator = context.createOscillator(), gain = context.createGain();
-      oscillator.type = 'square'; oscillator.frequency.value = 330;
-      gain.gain.setValueAtTime(.0001, now + delay); gain.gain.exponentialRampToValueAtTime(.12, now + delay + .02); gain.gain.exponentialRampToValueAtTime(.0001, now + delay + .16);
-      oscillator.connect(gain).connect(context.destination); oscillator.start(now + delay); oscillator.stop(now + delay + .18);
-    });
-    setTimeout(() => context.close(), 600);
-  }
-  private speak(text: string): void {
+  goBack(): void { void this.router.navigate(['/']); }
+  private speak(letter: string): void {
     window.speechSynthesis?.cancel();
-    const voice = new SpeechSynthesisUtterance(text);
-    voice.lang = 'en-US'; voice.rate = .9; voice.pitch = 1.1;
+    const voice = new SpeechSynthesisUtterance(letter);
+    voice.lang = 'en-US'; voice.rate = .75; voice.pitch = 1.1;
     window.speechSynthesis?.speak(voice);
+  }
+
+  private moveAlongRoad(targetIndex: number, letter: string): void {
+    const nextIndex = this.carIndex + (targetIndex > this.carIndex ? 1 : -1);
+    const currentPosition = this.stopPositions[this.carIndex];
+    const nextPosition = this.stopPositions[nextIndex];
+    if (nextPosition.x !== currentPosition.x) {
+      this.carDirection = nextPosition.x < currentPosition.x ? 'backward' : 'forward';
+    }
+    this.carIndex = nextIndex;
+    this.arrivalTimer = setTimeout(() => {
+      this.carIndex === targetIndex
+        ? this.announceArrival(letter)
+        : this.moveAlongRoad(targetIndex, letter);
+    }, 210);
+  }
+
+  private announceArrival(letter: string): void {
+    this.isDriving = false;
+    this.carMessage = letter;
+    this.speak(letter);
   }
 }

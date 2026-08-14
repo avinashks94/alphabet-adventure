@@ -25,5 +25,5 @@ export class AlphabetSoundsComponent {
     voice.lang = 'en-US'; voice.rate = .9; voice.pitch = 1.1;
     window.speechSynthesis?.speak(voice);
   }
-  goBack(): void { window.speechSynthesis?.cancel(); void this.router.navigate(['/']); }
+  goBack(): void { window.speechSynthesis?.cancel(); void this.router.navigate(['/dashboard']); }
 }

@@ -38,8 +38,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "baseHref": "./",
-            "deployUrl": "./",
+            "baseHref": "/",
+            "deployUrl": "/",
             "outputPath": "dist/alphabet-identify",
             "index": "src/index.html",
             "browser": "src/main.ts",

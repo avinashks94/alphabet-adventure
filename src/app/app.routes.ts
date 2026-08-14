@@ -3,6 +3,11 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
+    redirectTo: 'dashboard',
+  },
+  {
+    path: 'dashboard',
     title: 'Alphabet Adventure',
     loadComponent: () =>
       import('./dashboard/dashboard.component').then(
@@ -25,5 +30,5 @@ export const routes: Routes = [
         (m) => m.AlphabetCarComponent,
       ),
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: 'dashboard' },
 ];

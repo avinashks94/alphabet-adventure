@@ -28,7 +28,7 @@ jobs:
         run: npm ci
 
       - name: Build Angular application
-        run: npm run build -- --base-href /alphabet-adventure/ --deploy-url /alphabet-adventure/
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

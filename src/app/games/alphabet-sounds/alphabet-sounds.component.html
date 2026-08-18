@@ -1,1 +1,14 @@
-<main class="game-shell"><button class="home-button" (click)="goBack()">← <span>All games</span></button><div class="game-card" aria-live="polite"><p class="label">Press any letter key</p><div class="letter-box"><span class="big-letter">{{ selectedLetter.letter }}</span><span class="emoji">{{ selectedLetter.emoji }}</span></div><h1>{{ spokenText }}</h1><p class="hint">Try A, B, C, D and listen to the sound.</p></div></main>
+<main class="game-shell">
+  <button class="home-button" (click)="goBack()">
+    ← <span>All games</span>
+  </button>
+  <div class="game-card" aria-live="polite">
+    <p class="label">Press any letter key</p>
+    <div class="letter-box">
+      <span class="big-letter">{{ selectedLetter.letter }}</span
+      ><span class="emoji">{{ selectedLetter.emoji }}</span>
+    </div>
+    <h1>{{ spokenText }}</h1>
+    <p class="hint">Try A, B, C, D and listen to the sound.</p>
+  </div>
+</main>

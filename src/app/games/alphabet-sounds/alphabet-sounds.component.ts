@@ -2,11 +2,15 @@ import { Component, HostListener, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ALPHABET, AlphabetItem } from '../../shared/alphabet.data';
 
-@Component({ selector: 'app-alphabet-sounds', standalone: true, templateUrl: './alphabet-sounds.component.html' })
+@Component({
+  selector: 'app-alphabet-sounds',
+  standalone: true,
+  templateUrl: './alphabet-sounds.component.html',
+})
 export class AlphabetSoundsComponent {
   private readonly router = inject(Router);
   readonly alphabet = ALPHABET;
-  readonly itemByLetter = new Map(ALPHABET.map(item => [item.letter, item]));
+  readonly itemByLetter = new Map(ALPHABET.map((item) => [item.letter, item]));
   selectedLetter = ALPHABET[0];
   spokenText = 'Press any letter to begin';
 
@@ -22,8 +26,13 @@ export class AlphabetSoundsComponent {
     this.spokenText = `${item.letter} for ${item.word}`;
     window.speechSynthesis?.cancel();
     const voice = new SpeechSynthesisUtterance(this.spokenText);
-    voice.lang = 'en-US'; voice.rate = .9; voice.pitch = 1.1;
+    voice.lang = 'en-US';
+    voice.rate = 0.9;
+    voice.pitch = 1.1;
     window.speechSynthesis?.speak(voice);
   }
-  goBack(): void { window.speechSynthesis?.cancel(); void this.router.navigate(['/dashboard']); }
+  goBack(): void {
+    window.speechSynthesis?.cancel();
+    void this.router.navigate(['/dashboard']);
+  }
 }

@@ -1,0 +1,59 @@
+<main class="snake-game">
+  <header class="snake-nav">
+    <button (click)="goHome()">&larr; <span>Games</span></button>
+    <div>
+      <b><span class="snake-title-icon" role="img" aria-label="Friendly snake"><i class="title-eye left"></i><i class="title-eye right"></i><i class="title-smile"></i><i class="title-tongue"></i></span> Alphabet Snake</b><small>Press a letter. Feed the snake!</small>
+    </div>
+    <button class="reset" (click)="reset()">&#x21BB; Reset</button>
+  </header>
+  <section class="message" aria-live="polite">
+    <span>{{ activeItem?.emoji || "⌨️" }}</span>
+    <div>
+      <strong>{{
+        activeItem
+          ? activeItem.letter + " is for " + activeItem.name + "!"
+          : "Press any letter from A to Z"
+      }}</strong>
+      <small>{{
+        isMoving
+          ? "Ssssnake is on the way..."
+          : eaten.size + " of 26 words found"
+      }}</small>
+    </div>
+  </section>
+  <section class="fruit-garden" aria-label="Alphabet picture garden">
+    <button
+      *ngFor="let item of items"
+      class="fruit"
+      [class.eaten]="eaten.has(item.letter)"
+      [class.target]="activeItem?.letter === item.letter && isMoving"
+      (click)="chooseLetter(item.letter)"
+      [attr.aria-label]="item.letter + ' for ' + item.name"
+    >
+      <span class="fruit-picture" *ngIf="!eaten.has(item.letter)">{{
+        item.emoji
+      }}</span>
+      <span class="eaten-letter" *ngIf="eaten.has(item.letter)">{{
+        item.letter
+      }}</span>
+      <b>{{ item.letter }}</b
+      ><small>{{ item.name }}</small>
+    </button>
+    <div
+      class="snake"
+      [class.slithering]="isMoving"
+      [style.left.%]="snakePosition.x"
+      [style.top.%]="snakePosition.y"
+      [style.--angle]="snakeAngle + 'deg'"
+    >
+      <i class="tail t3"></i><i class="tail t2"></i><i class="tail t1"></i>
+      <i class="head"
+        ><span class="eye e1"></span><span class="eye e2"></span
+        ><span class="snake-cheek c1"></span><span class="snake-cheek c2"></span
+        ><span class="snake-nose"></span><span class="smile"></span
+        ><span class="tongue"></span
+      ></i>
+    </div>
+  </section>
+  <p class="mobile-note">Tap a picture if you do not have a keyboard.</p>
+</main>

@@ -1,6 +1,7 @@
 import { Component, HostListener, inject, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ALPHABET } from '../../shared/alphabet.data';
+import { ChildSpeechService } from '../../shared/child-speech.service';
 
 type StopPosition = { x: number; y: number };
 
@@ -18,6 +19,7 @@ type StopPosition = { x: number; y: number };
 })
 export class AlphabetCarComponent implements OnDestroy {
   private readonly router = inject(Router);
+  private readonly speech = inject(ChildSpeechService);
   readonly alphabet = ALPHABET;
   readonly itemByLetter = new Map(
     ALPHABET.map((item, index) => [item.letter, index]),
@@ -69,7 +71,7 @@ export class AlphabetCarComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     if (this.arrivalTimer) clearTimeout(this.arrivalTimer);
-    window.speechSynthesis?.cancel();
+    this.speech.cancel();
   }
   @HostListener('window:keydown', ['$event'])
   handleKeydown(event: KeyboardEvent): void {
@@ -93,15 +95,11 @@ export class AlphabetCarComponent implements OnDestroy {
     this.moveAlongRoad(index, letter);
   }
   goBack(): void {
+    this.speech.cancel();
     void this.router.navigate(['/dashboard']);
   }
   private speak(letter: string): void {
-    window.speechSynthesis?.cancel();
-    const voice = new SpeechSynthesisUtterance(letter);
-    voice.lang = 'en-US';
-    voice.rate = 0.75;
-    voice.pitch = 1.1;
-    window.speechSynthesis?.speak(voice);
+    this.speech.speak(letter);
   }
 
   private moveAlongRoad(targetIndex: number, letter: string): void {

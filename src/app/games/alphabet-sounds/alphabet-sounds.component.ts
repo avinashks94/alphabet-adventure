@@ -1,14 +1,16 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ALPHABET, AlphabetItem } from '../../shared/alphabet.data';
+import { ChildSpeechService } from '../../shared/child-speech.service';
 
 @Component({
   selector: 'app-alphabet-sounds',
   standalone: true,
   templateUrl: './alphabet-sounds.component.html',
 })
-export class AlphabetSoundsComponent {
+export class AlphabetSoundsComponent implements OnDestroy {
   private readonly router = inject(Router);
+  private readonly speech = inject(ChildSpeechService);
   readonly alphabet = ALPHABET;
   readonly itemByLetter = new Map(ALPHABET.map((item) => [item.letter, item]));
   selectedLetter = ALPHABET[0];
@@ -24,15 +26,12 @@ export class AlphabetSoundsComponent {
   playLetter(item: AlphabetItem): void {
     this.selectedLetter = item;
     this.spokenText = `${item.letter} for ${item.word}`;
-    window.speechSynthesis?.cancel();
-    const voice = new SpeechSynthesisUtterance(this.spokenText);
-    voice.lang = 'en-US';
-    voice.rate = 0.9;
-    voice.pitch = 1.1;
-    window.speechSynthesis?.speak(voice);
+    this.speech.speak(this.spokenText);
   }
+  ngOnDestroy(): void { this.speech.cancel(); }
+
   goBack(): void {
-    window.speechSynthesis?.cancel();
+    this.speech.cancel();
     void this.router.navigate(['/dashboard']);
   }
 }

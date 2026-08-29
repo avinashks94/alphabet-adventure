@@ -106,7 +106,7 @@ button {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 320px));
+  grid-template-columns: repeat(2, minmax(0, 360px));
   justify-content: center;
   gap: 24px;
 }
@@ -660,3 +660,9 @@ button {
     animation-duration: 2s;
   }
 }
+
+.snake-tile { background: linear-gradient(145deg, #65cf55, #218d54); color: #fff; }
+.snake-preview { gap: 7px; font-size: 2.6rem; background: radial-gradient(circle at 50% 100%, #8fe05e 0 45%, transparent 46%); }
+.preview-snake { font-size: 5rem; animation: preview-slither 1.2s ease-in-out infinite alternate; }
+.snake-tile .play-pill { color: #21864e; }
+@keyframes preview-slither { to { transform: translateX(10px) rotate(8deg); } }

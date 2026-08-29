@@ -30,5 +30,13 @@ export const routes: Routes = [
         (m) => m.AlphabetCarComponent,
       ),
   },
+  {
+    path: 'alphabet-snake',
+    title: 'Alphabet Snake',
+    loadComponent: () =>
+      import('./games/alphabet-snake/alphabet-snake.component').then(
+        (m) => m.AlphabetSnakeComponent,
+      ),
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -9,4 +9,13 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css',
   encapsulation: ViewEncapsulation.None,
 })
-export class AppComponent {}
+export class AppComponent implements OnDestroy {
+  showSplash = true;
+  private readonly splashTimer = window.setTimeout(() => {
+    this.showSplash = false;
+  }, 3000);
+
+  ngOnDestroy(): void {
+    window.clearTimeout(this.splashTimer);
+  }
+}
